@@ -3,6 +3,8 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using System.IO;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 
@@ -36,7 +38,7 @@ namespace Sabresaurus.SabreCSG.Volumes
 		{
 			get
 			{
-				return (Material)SabreCSGResources.LoadObject( "Resources/Materials/scsg_volume_reverb.mat" );
+				return LoadMaterial( "Resources/scsg_volume_reverb.mat", "ReverbVolume" );//(Material)SabreCSGResources.LoadObject( "Resources/Materials/scsg_volume_reverb.mat" );
 			}
 		}
 
@@ -56,6 +58,7 @@ namespace Sabresaurus.SabreCSG.Volumes
 		[SerializeField] public float density = 100;
 
 #if UNITY_EDITOR
+
 
 		public override bool OnInspectorGUI( Volume[] selectedVolumes )
 		{
@@ -222,15 +225,75 @@ namespace Sabresaurus.SabreCSG.Volumes
 			return invalidate;
 		}
 
-#endif
 
+		private Dictionary<string, Material> loadedObjects = new Dictionary<string, Material>();
+
+		private Material LoadMaterial( string path, string relativeToScriptName )
+		{
+			bool found = false;
+
+			Material loadedObject = null;
+
+			// First of all see if there's a cached record
+			if( loadedObjects.ContainsKey( path ) )
+			{
+				found = true;
+				loadedObject = loadedObjects[path];
+
+				// Now make sure the cached record actually points to something
+				if( loadedObject != null )
+				{
+					return loadedObject;
+				}
+			}
+
+			// Failed to load from cache, so load it from the Asset Database
+			loadedObject = (Material)AssetDatabase.LoadMainAssetAtPath( Path.Combine( GetLocalResourcePath(relativeToScriptName), path ) );
+			if( loadedObject != null )
+			{
+				if( found )
+				{
+					// A cache record was found but empty, so set the existing record to the newly loaded object
+					loadedObjects[path] = loadedObject;
+				}
+				else
+				{
+					// We know that it's not already in the cache, so add it to the end
+					loadedObjects.Add( path, loadedObject );
+				}
+			}
+			return loadedObject;
+		}
+
+
+		private string GetLocalResourcePath(string scriptName)
+		{
+			string[] guids = AssetDatabase.FindAssets( scriptName + " t:Script" );
+
+			foreach( string guid in guids )
+			{
+				string path = AssetDatabase.GUIDToAssetPath( guid );
+				string suffix = scriptName + ".cs";
+
+				Debug.Log( path );
+
+				if( path.EndsWith( suffix ) )
+				{
+					path = path.Remove( path.Length - suffix.Length, suffix.Length );
+					return path;
+				}
+			}
+			return string.Empty;
+		}
+
+#endif
 		public override void OnCreateVolume( GameObject volume )
 		{
 			AudioReverbZone arz = volume.AddComponent<AudioReverbZone>();
 			ReverbVolumeComponent rvc = volume.AddComponent<ReverbVolumeComponent>();
 
 			arz.maxDistance = volume.GetComponent<Collider>().bounds.extents.magnitude;
-			arz.minDistance = volume.GetComponent<Collider>().bounds.extents.magnitude * 0.95f;
+			arz.minDistance = volume.GetComponent<Collider>().bounds.extents.magnitude* 0.95f;
 
 			arz.room = room;
 			arz.roomHF = roomHF;
@@ -248,7 +311,7 @@ namespace Sabresaurus.SabreCSG.Volumes
 
 			rvc.layer = layer;
 		}
-	}
+}
 }
 
 #endif
