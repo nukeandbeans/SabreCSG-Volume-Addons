@@ -275,7 +275,7 @@ namespace Sabresaurus.SabreCSG.Volumes
 				string path = AssetDatabase.GUIDToAssetPath( guid );
 				string suffix = scriptName + ".cs";
 
-				Debug.Log( path );
+				//Debug.Log( path );
 
 				if( path.EndsWith( suffix ) )
 				{
