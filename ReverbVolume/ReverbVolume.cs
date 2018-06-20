@@ -38,7 +38,7 @@ namespace Sabresaurus.SabreCSG.Volumes
 		{
 			get
 			{
-				return LoadMaterial( "Resources/scsg_volume_reverb.mat", "ReverbVolume" );//(Material)SabreCSGResources.LoadObject( "Resources/Materials/scsg_volume_reverb.mat" );
+				return LoadMaterial( "Data/scsg_volume_reverb.mat", "ReverbVolume" );//(Material)SabreCSGResources.LoadObject( "Resources/Materials/scsg_volume_reverb.mat" );
 			}
 		}
 
