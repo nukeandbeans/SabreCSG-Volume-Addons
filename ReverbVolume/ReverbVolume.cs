@@ -18,20 +18,20 @@ namespace Sabresaurus.SabreCSG.Volumes
 	{
 		public class GUILabels
 		{
-			public static GUIContent Layer { get; } = new GUIContent( "Layer Mask", "The layer mask to limit the colliders that can invoke the trigger." );
-			public static GUIContent Room { get; } = new GUIContent( "Room", "" );
-			public static GUIContent RoomHF { get; } = new GUIContent( "Room HF", "" );
-			public static GUIContent RoomLF { get; } = new GUIContent( "Room LF", "" );
-			public static GUIContent DecayTime { get; } = new GUIContent( "Decay Time", "" );
-			public static GUIContent DecayHFRatio { get; } = new GUIContent( "Decay HF Ratio", "" );
-			public static GUIContent Reflections { get; } = new GUIContent( "Reflections", "" );
-			public static GUIContent ReflectionsDelay { get; } = new GUIContent( "Reflections Delay", "" );
-			public static GUIContent Reverb { get; } = new GUIContent( "Reverb", "" );
-			public static GUIContent ReverbDelay { get; } = new GUIContent( "Reverb Delay", "" );
-			public static GUIContent HFReference { get; } = new GUIContent( "HF Reference", "" );
-			public static GUIContent LFReference { get; } = new GUIContent( "LF Reference", "" );
-			public static GUIContent Diffusion { get; } = new GUIContent( "Diffusion", "" );
-			public static GUIContent Density { get; } = new GUIContent( "Density", "" );
+			public static GUIContent Layer { get { return new GUIContent( "Layer Mask", "The layer mask to limit the colliders that can invoke the trigger." ); } }
+			public static GUIContent Room { get { return new GUIContent( "Room", "" ); } }
+			public static GUIContent RoomHF { get { return new GUIContent( "Room HF", "" ); } }
+			public static GUIContent RoomLF { get { return new GUIContent( "Room LF", "" ); } }
+			public static GUIContent DecayTime { get { return new GUIContent( "Decay Time", "" ); } }
+			public static GUIContent DecayHFRatio { get { return new GUIContent( "Decay HF Ratio", "" ); } }
+			public static GUIContent Reflections { get { return new GUIContent( "Reflections", "" ); } }
+			public static GUIContent ReflectionsDelay { get { return new GUIContent( "Reflections Delay", "" ); } }
+			public static GUIContent Reverb { get { return new GUIContent( "Reverb", "" ); } }
+			public static GUIContent ReverbDelay { get { return new GUIContent( "Reverb Delay", "" ); } }
+			public static GUIContent HFReference { get { return new GUIContent( "HF Reference", "" ); } }
+			public static GUIContent LFReference { get { return new GUIContent( "LF Reference", "" ); } }
+			public static GUIContent Diffusion { get { return new GUIContent( "Diffusion", "" ); } }
+			public static GUIContent Density { get { return new GUIContent( "Density", "" ); } }
 		}
 
 		public override Material BrushPreviewMaterial
