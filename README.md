@@ -12,4 +12,4 @@ Requires SabreCSG to compile, found at the above link.
 
 ### Releases
 * Reverb Volumes [#1](https://github.com/Kerfuffles/SabreCSG-Volume-Addons/pull/1)
-* Usable Trigger Volumes [#1](https://github.com/Kerfuffles/SabreCSG-Volume-Addons/pull/2)
+* Usable Trigger Volumes [#2](https://github.com/Kerfuffles/SabreCSG-Volume-Addons/pull/2)
