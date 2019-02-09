@@ -13,8 +13,17 @@ using UnityEditor;
 
 namespace Sabresaurus.SabreCSG.Volumes
 {
-	public class ReflectionProbeVolume : Volume
-	{
+    public class ReflectionProbeVolume : Volume
+    {
+#if UNITY_EDITOR
+
+        public override Material BrushPreviewMaterial
+        {
+            get
+            {
+                return LoadMaterial( "Data/scsg_volume_reflection.mat", "ReflectionProbeVolume" );
+            }
+        }
 
         public ReflectionProbeMode type = ReflectionProbeMode.Baked;
         public ReflectionProbeTimeSlicingMode timeMode = ReflectionProbeTimeSlicingMode.AllFacesAtOnce;
@@ -35,24 +44,14 @@ namespace Sabresaurus.SabreCSG.Volumes
 
         private ReflectionProbe p;
 
-#if UNITY_EDITOR
-
-        public override Material BrushPreviewMaterial
-		{
-			get
-			{
-                return LoadMaterial( "Data/scsg_volume_reflection.mat", "ReflectionProbeVolume" );
-            }
-		}
-
         public override bool OnInspectorGUI( Volume[] selectedVolumes )
-		{
-			var rpVolumes = selectedVolumes.Cast<ReflectionProbeVolume>();
-			bool invalidate = false;
+        {
+            System.Collections.Generic.IEnumerable<ReflectionProbeVolume> rpVolumes = selectedVolumes.Cast<ReflectionProbeVolume>();
+            bool invalidate = false;
 
-			GUILayout.Label( "Reflection Probe", "OL Title" );
+            GUILayout.Label( "Reflection Probe", "OL Title" );
 
-			GUILayout.BeginVertical();
+            GUILayout.BeginVertical();
             {
                 EditorGUI.indentLevel = 1;
 
@@ -66,7 +65,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldType != type )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.type = type;
+                        }
 
                         invalidate = true;
                     }
@@ -74,28 +75,28 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( type == ReflectionProbeMode.Custom )
                     {
                         EditorGUILayout.HelpBox( "Editing custom probes is currently not supported by volumes. This can be set manually on the volume component.", MessageType.Info );
-                
-                    /*
-                        bool oldDynamicObjects;
-                        dynamicObjects = EditorGUILayout.Toggle( new GUIContent( "Dynamic Objects" ), oldDynamicObjects = dynamicObjects );
-                        if( oldDynamicObjects != dynamicObjects )
-                        {
-                            foreach( ReflectionProbeVolume volume in rpVolumes )
-                                volume.dynamicObjects = dynamicObjects;
 
-                            invalidate = true;
-                        }
+                        /*
+                            bool oldDynamicObjects;
+                            dynamicObjects = EditorGUILayout.Toggle( new GUIContent( "Dynamic Objects" ), oldDynamicObjects = dynamicObjects );
+                            if( oldDynamicObjects != dynamicObjects )
+                            {
+                                foreach( ReflectionProbeVolume volume in rpVolumes )
+                                    volume.dynamicObjects = dynamicObjects;
 
-                        Cubemap oldCustomCube;
-                        customCube = (Cubemap)EditorGUILayout.ObjectField( "Custom Cube", oldCustomCube = customCube, typeof( Cubemap ), false );
-                        if( oldCustomCube != customCube )
-                        {
-                            foreach( ReflectionProbeVolume volume in rpVolumes )
-                                volume.customCube = customCube;
+                                invalidate = true;
+                            }
 
-                            invalidate = true;
-                        }
-                    */
+                            Cubemap oldCustomCube;
+                            customCube = (Cubemap)EditorGUILayout.ObjectField( "Custom Cube", oldCustomCube = customCube, typeof( Cubemap ), false );
+                            if( oldCustomCube != customCube )
+                            {
+                                foreach( ReflectionProbeVolume volume in rpVolumes )
+                                    volume.customCube = customCube;
+
+                                invalidate = true;
+                            }
+                        */
                     }
 
                     if( type == ReflectionProbeMode.Realtime )
@@ -106,7 +107,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                         if( oldRefreshMode != refreshMode )
                         {
                             foreach( ReflectionProbeVolume volume in rpVolumes )
+                            {
                                 volume.refreshMode = refreshMode;
+                            }
 
                             invalidate = true;
                         }
@@ -116,13 +119,14 @@ namespace Sabresaurus.SabreCSG.Volumes
                         if( oldTimeMode != timeMode )
                         {
                             foreach( ReflectionProbeVolume volume in rpVolumes )
+                            {
                                 volume.timeMode = timeMode;
+                            }
 
                             invalidate = true;
                         }
                         EditorGUI.indentLevel = 1;
                     }
-
 
                     GUILayout.Space( 4 );
                 }
@@ -138,7 +142,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldImportance != importance )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.importance = importance;
+                        }
 
                         invalidate = true;
                     }
@@ -148,7 +154,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldIntensity != intensity )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.intensity = intensity;
+                        }
 
                         invalidate = true;
                     }
@@ -158,7 +166,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldBoxProj != boxProjection )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.boxProjection = boxProjection;
+                        }
 
                         invalidate = true;
                     }
@@ -168,7 +178,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldBlendDist != blendDistance )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.blendDistance = blendDistance;
+                        }
 
                         invalidate = true;
                     }
@@ -189,7 +201,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldRes != resolution )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.resolution = resolution;
+                        }
 
                         invalidate = true;
                     }
@@ -199,17 +213,21 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldHDR != hdr )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.hdr = hdr;
+                        }
 
                         invalidate = true;
                     }
 
                     float oldShadowDist;
                     shadowDist = EditorGUILayout.FloatField( "Shadow Distance", oldShadowDist = shadowDist );
-                    if( oldShadowDist != blendDistance )
+                    if( oldShadowDist != shadowDist )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.shadowDist = shadowDist;
+                        }
 
                         invalidate = true;
                     }
@@ -219,7 +237,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldCFlags != clearFlags )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.clearFlags = clearFlags;
+                        }
 
                         invalidate = true;
                     }
@@ -229,7 +249,9 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldColor != background )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.background = background;
+                        }
 
                         invalidate = true;
                     }
@@ -239,17 +261,21 @@ namespace Sabresaurus.SabreCSG.Volumes
                     if( oldMask != cullingMask )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.cullingMask = cullingMask;
+                        }
 
                         invalidate = true;
                     }
 
                     Vector2 oldClip;
-                    clippingPlanes = EditorGUILayout.Vector2Field(new GUIContent("Clipping Planes", "X = Near, Y = Far"), oldClip = clippingPlanes );
+                    clippingPlanes = EditorGUILayout.Vector2Field( new GUIContent( "Clipping Planes", "X = Near, Y = Far" ), oldClip = clippingPlanes );
                     if( oldClip != clippingPlanes )
                     {
                         foreach( ReflectionProbeVolume volume in rpVolumes )
+                        {
                             volume.clippingPlanes = clippingPlanes;
+                        }
 
                         invalidate = true;
                     }
@@ -259,62 +285,28 @@ namespace Sabresaurus.SabreCSG.Volumes
                     GUILayout.Space( 4 );
                 }
                 GUILayout.EndVertical();
-                
+
                 if( type == ReflectionProbeMode.Custom )
                 {
                     EditorGUILayout.HelpBox( "This probe is set to Custom, and is not handled by volumes.", MessageType.Info );
-
                 }
-                else if (type == ReflectionProbeMode.Realtime )
+                else if( type == ReflectionProbeMode.Realtime )
                 {
                     EditorGUILayout.HelpBox( "This probe is set to Realtime, and its baking is handled by unity. The results are stored in the GI Cache.", MessageType.Info );
                 }
 
                 EditorGUI.indentLevel = 0;
             }
-			GUILayout.EndVertical();
+            GUILayout.EndVertical();
 
-			return invalidate;
-		}
+            return invalidate;
+        }
 
-		private Material LoadMaterial( string path, string relativeToScriptName )
-		{
-			Material loadedObject = (Material)AssetDatabase.LoadMainAssetAtPath( Path.Combine( GetLocalResourcePath(relativeToScriptName), path ) );
-			
-			if( loadedObject != null )
-			{
-				return loadedObject;
-			}
-			return new Material( Shader.Find( "Unlit/Colored" ) );
-		}
-
-
-		private string GetLocalResourcePath(string scriptName)
-		{
-			string[] guids = AssetDatabase.FindAssets( scriptName + " t:Script" );
-
-			foreach( string guid in guids )
-			{
-				string path = AssetDatabase.GUIDToAssetPath( guid );
-				string suffix = scriptName + ".cs";
-
-				//Debug.Log( path );
-
-				if( path.EndsWith( suffix ) )
-				{
-					path = path.Remove( path.Length - suffix.Length, suffix.Length );
-					return path;
-				}
-			}
-			return string.Empty;
-		}
-
-#endif
-		public override void OnCreateVolume( GameObject volume )
-		{
-			ReflectionProbeVolumeComponent rpc = volume.AddOrGetComponent<ReflectionProbeVolumeComponent>();
+        public override void OnCreateVolume( GameObject volume )
+        {
+            ReflectionProbeVolumeComponent rpc = volume.AddOrGetComponent<ReflectionProbeVolumeComponent>();
             p = volume.GetComponent<ReflectionProbe>();
-            
+
             rpc.Setup(); // init bounds and set them up on the probe
 
             rpc.type = type;
@@ -335,7 +327,40 @@ namespace Sabresaurus.SabreCSG.Volumes
             //rpc.customCube = customCube;
 
             rpc.Apply(); // make sure the probe knows the new settings.
-		}
+        }
+
+        private Material LoadMaterial( string path, string relativeToScriptName )
+        {
+            Material loadedObject = (Material)AssetDatabase.LoadMainAssetAtPath( Path.Combine( GetLocalResourcePath( relativeToScriptName ), path ) );
+
+            if( loadedObject != null )
+            {
+                return loadedObject;
+            }
+            return new Material( Shader.Find( "Unlit/Colored" ) );
+        }
+
+        private string GetLocalResourcePath( string scriptName )
+        {
+            string[] guids = AssetDatabase.FindAssets( scriptName + " t:Script" );
+
+            foreach( string guid in guids )
+            {
+                string path = AssetDatabase.GUIDToAssetPath( guid );
+                string suffix = scriptName + ".cs";
+
+                //Debug.Log( path );
+
+                if( path.EndsWith( suffix ) )
+                {
+                    path = path.Remove( path.Length - suffix.Length, suffix.Length );
+                    return path;
+                }
+            }
+            return string.Empty;
+        }
+
+#endif
     }
 }
 
